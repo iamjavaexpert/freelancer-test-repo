@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<body>
+<main layout:fragment="content">
+
+<div class="form-card">
+    <h2><i class="wa-user-plus"></i> Create New Employee</h2>
+
+    <form th:action="@{/employees/create}" method="post" th:object="${employee}">
+        <div class="form-group">
+            <label class="icon-label"><i class="wa-user"></i> Name</label>
+            <input type="text" th:field="*{name}" placeholder="Enter name" required>
+        </div>
+
+        <div class="form-group">
+            <label class="icon-label"><i class="wa-envelope"></i> Email</label>
+            <input type="email" th:field="*{email}" placeholder="Enter email" required>
+        </div>
+
+        <div class="form-group">
+            <label class="icon-label"><i class="wa-badge-check"></i> Role</label>
+            <input type="text" th:field="*{role}" placeholder="Enter role (e.g., Developer)">
+        </div>
+
+        <div class="form-group">
+            <label class="icon-label"><i class="wa-diagram-project"></i> Assigned Projects</label>
+            <select th:field="*{projectIds}" multiple size="4">
+                <option th:each="project : ${allProjects}" th:value="${project.id}" th:text="${project.name}"></option>
+            </select>
+        </div>
+        </br>
+        <button type="submit" class="submit-btn">
+            <i class="wa-circle-plus"></i> Create
+        </button>
+    </form>
+</div>
+</main>
+</body>
+</html>

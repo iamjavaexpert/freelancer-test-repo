@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+
+<body>
+<main layout:fragment="content">
+
+<div class="max-w-4xl mx-auto bg-white mt-8 p-6 rounded-lg shadow-md">
+    <h2 class="text-xl font-bold text-blue-600 mb-6 text-center"><i class="wa-diagram-project"></i> Project List</h2>
+
+    <a th:href="@{/projects/create}" class="inline-block mb-4 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-semibold">
+        <i class="wa-circle-plus mr-1"></i> Add New Project
+    </a>
+
+    <table class="w-full border-collapse">
+        <thead>
+        <tr class="bg-blue-600 text-white">
+            <th class="text-left py-2 px-3"><i class="wa-hashtag"></i> ID</th>
+            <th class="text-left py-2 px-3"><i class="wa-pen-nib"></i> Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="project : ${projects}" class="border-b hover:bg-gray-100">
+            <td class="py-2 px-3" th:text="${project.id}">1</td>
+            <td class="py-2 px-3" th:text="${project.name}">Demo Project</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</main>
+
+</body>
+</html>

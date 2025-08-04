@@ -61,7 +61,19 @@ class NavigationProvider {
                     NavigationSectionItem(label = "Invoices", url = "/invoice"),
                     NavigationSectionItem(label = "New Invoice", url = "/invoice/new"),
                 )
+            ),
+
+            NavigationSection(
+                title = "Timesheet", icon = "file-text",
+                items = listOf(
+                    NavigationSectionItem(label = "Add Employee", url = "/employees/create"),
+                    NavigationSectionItem(label = "List of Employees", url = "/employees/list"),
+                    NavigationSectionItem(label = "Add Project", url = "/projects/list"),
+                    NavigationSectionItem(label = "Add Weekly Timesheet", url = "/timeentries/weekly"),
+                    NavigationSectionItem(label = "Monthly Timesheet Report", url = "/timeentries/monthly")
+                )
             )
         )
+
     }
 }

@@ -13,6 +13,9 @@ dependencies {
     implementation(project(":bank"))
     implementation(project(":attachment"))
     implementation(project(":invoice"))
+    implementation(project(":timesheet"))
+    implementation(project(":project"))
+    implementation(project(":employee"))
 
     // Spring boot dependencies
     implementation("org.springframework.boot:spring-boot-starter-actuator")

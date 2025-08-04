@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <script>
+        function autoSubmitForm() {
+            document.getElementById('selectionForm').submit();
+        }
+    </script>
+</head>
+<body>
+<main layout:fragment="content">
+<div class="max-w-7xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6 flex items-center gap-2"><i class="wa-calendar-week text-blue-600"></i> Weekly Time Entry</h1>
+
+    <form id="selectionForm" th:action="@{/timeentries/weekly}" th:object="${form}" method="get"
+          class="bg-white p-6 rounded shadow mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Employee</label>
+                <select name="employeeId" onchange="autoSubmitForm()"
+                        class="mt-1 w-full border-gray-300 rounded shadow-sm px-3 py-2">
+                    <option value="">-- Select --</option>
+                    <option th:each="emp : ${employees}"
+                            th:value="${emp.id}"
+                            th:text="${emp.name}"
+                            th:selected="${emp.id} == ${form.employeeId}">
+                    </option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Select Week Date</label>
+                <input type="date" name="weekStartDate"
+                       th:value="${form.weekStartDate}"
+                       onchange="autoSubmitForm()"
+                       class="mt-1 w-full border-gray-300 rounded shadow-sm px-3 py-2"/>
+            </div>
+        </div>
+    </form>
+
+    <form th:if="${form.employeeId != null}" th:action="@{/timeentries/saveWeekly}" th:object="${form}" method="post"
+          class="bg-white p-6 rounded shadow">
+        <input type="hidden" th:field="*{employeeId}"/>
+        <input type="hidden" th:field="*{weekStartDate}"/>
+
+        <div class="overflow-auto">
+            <table class="min-w-full text-sm border border-gray-200">
+                <thead class="bg-blue-50">
+                <tr class="text-left text-gray-700">
+                    <th class="p-3 border"><i class="wa-diagram-project text-blue-500"></i> Project</th>
+                    <th class="p-3 border" th:each="entry : ${dayHeaders}">
+                        <div th:text="${entry.key}" class="font-semibold"></div>
+                        <div th:text="${#temporals.format(entry.value, 'dd MMM')}" class="text-xs text-gray-500"></div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="row, iStat : ${form.rows}" class="hover:bg-gray-50">
+                    <td class="p-2 border" th:text="${projectMap[row.projectId]}">Project Name</td>
+                    <input type="hidden" th:field="*{rows[__${iStat.index}__].projectId}"/>
+
+                    <td class="p-2 border">
+                        
+                        <input type="number" step="0.5"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyHours[Mon]'}"
+                               th:value="${row.dailyHours['Mon']}"
+                               class="w-20 px-2 py-1 border rounded mb-1"/>
+
+                        
+                        <input type="text"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyActivities[Mon]'}"
+                               th:value="${row.dailyActivities['Mon']}"
+                               placeholder="Activity"
+                               class="w-20 text-xs px-2 py-1 border rounded text-gray-600 mb-1"/>
+
+                        
+                        <input type="text"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyComments[Mon]'}"
+                               th:value="${row.dailyComments['Mon']}"
+                               placeholder="Comment"
+                               class="w-20 text-xs px-2 py-1 border rounded text-gray-600"/>
+                    </td>
+                    <td class="p-2 border">
+                        
+                        <input type="number" step="0.5"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyHours[Tue]'}"
+                               th:value="${row.dailyHours['Tue']}"
+                               class="w-20 px-2 py-1 border rounded mb-1"/>
+
+                        
+                        <input type="text"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyActivities[Tue]'}"
+                               th:value="${row.dailyActivities['Tue']}"
+                               placeholder="Activity"
+                               class="w-20 text-xs px-2 py-1 border rounded text-gray-600 mb-1"/>
+
+                        
+                        <input type="text"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyComments[Tue]'}"
+                               th:value="${row.dailyComments['Tue']}"
+                               placeholder="Comment"
+                               class="w-20 text-xs px-2 py-1 border rounded text-gray-600"/>
+                    </td>
+
+                    <td class="p-2 border">
+                        
+                        <input type="number" step="0.5"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyHours[Wed]'}"
+                               th:value="${row.dailyHours['Wed']}"
+                               class="w-20 px-2 py-1 border rounded mb-1"/>
+
+                        
+                        <input type="text"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyActivities[Wed]'}"
+                               th:value="${row.dailyActivities['Wed']}"
+                               placeholder="Activity"
+                               class="w-20 text-xs px-2 py-1 border rounded text-gray-600 mb-1"/>
+
+                        
+                        <input type="text"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyComments[Wed]'}"
+                               th:value="${row.dailyComments['Wed']}"
+                               placeholder="Comment"
+                               class="w-20 text-xs px-2 py-1 border rounded text-gray-600"/>
+                    </td>
+
+                    <td class="p-2 border">
+                        
+                        <input type="number" step="0.5"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyHours[Thu]'}"
+                               th:value="${row.dailyHours['Thu']}"
+                               class="w-20 px-2 py-1 border rounded mb-1"/>
+
+                        
+                        <input type="text"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyActivities[Thu]'}"
+                               th:value="${row.dailyActivities['Thu']}"
+                               placeholder="Activity"
+                               class="w-20 text-xs px-2 py-1 border rounded text-gray-600 mb-1"/>
+
+                        
+                        <input type="text"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyComments[Thu]'}"
+                               th:value="${row.dailyComments['Thu']}"
+                               placeholder="Comment"
+                               class="w-20 text-xs px-2 py-1 border rounded text-gray-600"/>
+                    </td>
+
+                    <td class="p-2 border">
+                        
+                        <input type="number" step="0.5"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyHours[Fri]'}"
+                               th:value="${row.dailyHours['Fri']}"
+                               class="w-20 px-2 py-1 border rounded mb-1"/>
+
+                        
+                        <input type="text"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyActivities[Fri]'}"
+                               th:value="${row.dailyActivities['Fri']}"
+                               placeholder="Activity"
+                               class="w-20 text-xs px-2 py-1 border rounded text-gray-600 mb-1"/>
+
+                        
+                        <input type="text"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyComments[Fri]'}"
+                               th:value="${row.dailyComments['Fri']}"
+                               placeholder="Comment"
+                               class="w-20 text-xs px-2 py-1 border rounded text-gray-600"/>
+                    </td>
+
+                    <td class="p-2 border">
+                        
+                        <input type="number" step="0.5"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyHours[Sat]'}"
+                               th:value="${row.dailyHours['Sat']}"
+                               class="w-20 px-2 py-1 border rounded mb-1"/>
+
+                        
+                        <input type="text"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyActivities[Sat]'}"
+                               th:value="${row.dailyActivities['Sat']}"
+                               placeholder="Activity"
+                               class="w-20 text-xs px-2 py-1 border rounded text-gray-600 mb-1"/>
+
+                        
+                        <input type="text"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyComments[Sat]'}"
+                               th:value="${row.dailyComments['Sat']}"
+                               placeholder="Comment"
+                               class="w-20 text-xs px-2 py-1 border rounded text-gray-600"/>
+                    </td>
+
+                    <td class="p-2 border">
+                        
+                        <input type="number" step="0.5"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyHours[Sun]'}"
+                               th:value="${row.dailyHours['Sun']}"
+                               class="w-20 px-2 py-1 border rounded mb-1"/>
+
+                        
+                        <input type="text"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyActivities[Sun]'}"
+                               th:value="${row.dailyActivities['Sun']}"
+                               placeholder="Activity"
+                               class="w-20 text-xs px-2 py-1 border rounded text-gray-600 mb-1"/>
+
+                        
+                        <input type="text"
+                               th:attr="name=${'rows[' + iStat.index + '].dailyComments[Sun]'}"
+                               th:value="${row.dailyComments['Sun']}"
+                               placeholder="Comment"
+                               class="w-20 text-xs px-2 py-1 border rounded text-gray-600"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-4 text-right">
+            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+                <i class="wa-save mr-1"></i> Submit
+            </button>
+        </div>
+    </form>
+</div>
+</main>
+</body>
+</html>

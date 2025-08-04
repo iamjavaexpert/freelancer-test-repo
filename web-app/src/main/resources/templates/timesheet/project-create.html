@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+
+<body>
+<main layout:fragment="content">
+
+<div class="max-w-xl mx-auto bg-white mt-8 p-6 rounded-lg shadow-md">
+    <h2 class="text-xl font-bold text-blue-600 mb-6 text-center"><i class="wa-diagram-project"></i> Create New Project</h2>
+
+    <form th:action="@{/projects/create}" method="post" th:object="${project}">
+        <div class="mb-4">
+            <label class="block font-semibold mb-2"><i class="wa-pen-nib mr-1"></i> Project Name</label>
+            <input type="text" th:field="*{name}" placeholder="Enter project name"
+                   class="w-full p-2 border border-gray-300 rounded" required>
+        </div>
+        </br>
+        <button type="submit"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+            <i class="wa-circle-plus mr-1"></i> Create Project
+        </button>
+    </form>
+</div>
+</main>
+
+</body>
+</html>
